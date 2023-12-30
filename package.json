@@ -1,5 +1,5 @@
 {
-  "name": "astro-cached-icon",
+  "name": "@elweday/astro-cached-icon",
   "version": "0.0.1",
   "type": "module",
   "types": "./src/index.d.ts",
@@ -7,8 +7,7 @@
   "license": "MIT",
   "author": "Mohammed Nasser <https://github.com/elweday>",
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "access": "public"
   },
   "exports": {
     ".": "./index.ts"
