@@ -8,7 +8,7 @@
   "author": "Mohammed Nasser <https://github.com/elweday>",
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://registry.npmjs.org/"
   },
   "exports": {
     ".": "./index.ts"
