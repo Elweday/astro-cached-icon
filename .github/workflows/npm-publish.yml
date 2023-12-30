@@ -14,7 +14,7 @@ jobs:
       - name: Use NPM Token with organization read access
         uses: dkershner6/use-npm-token-action@v1
         with:
-          token: "${{ secrets.NPMJS_READ }}"
-          workspace: ./node
+          token: "${{ secrets.NPM_AUTH_TOKEN }}"
+          workspace: ./
 
       - run: npm i # This will now work with scoped packages
