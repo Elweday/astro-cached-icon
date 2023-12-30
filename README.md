@@ -1,4 +1,4 @@
-# astro-iconify
+# astro-cached-icon
 
 **Effortlessly integrate Iconify icons into your Astro projects with caching and bundling for optimal performance.**
 
@@ -28,7 +28,7 @@ npm install astro-cached-icon
 just import and use
 
 ```jsx
-import { Icon } from 'astro-iconify';
+import Icon  from 'astro-cached-icon';
 
 ```
 
