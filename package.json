@@ -8,8 +8,11 @@
   "license": "MIT",
   "author": "Mohammed Nasser <https://github.com/elweday>",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
+
+  
   "exports": {
     ".": "./index.ts"
   },
