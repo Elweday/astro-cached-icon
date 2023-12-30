@@ -16,6 +16,9 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@elweday'
       - run: npm install
+      - echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > ~/.npmrc
+      - echo "//registry.npmjs.org/:always-auth=true" >> ~/.npmrc
+
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_KEY}}
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
