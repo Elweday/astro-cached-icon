@@ -1,6 +1,6 @@
 {
   "name": "astro-cached-icon",
-  "version": "0.0.8",
+  "version": "0.0.1",
   "type": "module",
   "types": "./src/index.d.ts",
   "description": "Astro component for cached icons",
