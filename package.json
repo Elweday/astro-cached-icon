@@ -1,5 +1,5 @@
 {
-  "name": "astro-cached-icon",
+  "name": "@elweday/astro-cached-icon",
   "version": "0.0.1",
   "type": "module",
   "types": "./src/index.d.ts",
