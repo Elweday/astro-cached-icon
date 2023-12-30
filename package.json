@@ -1,18 +1,14 @@
 {
   "name": "astro-cached-icon",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "type": "module",
   "types": "./src/index.d.ts",
-  "main": "index.js",
   "description": "Astro component for cached icons",
   "license": "MIT",
   "author": "Mohammed Nasser <https://github.com/elweday>",
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
-
-  
   "exports": {
     ".": "./index.ts"
   },
@@ -21,7 +17,11 @@
     "index.ts"
   ],
   "keywords": [
-    "astro-component"
+    "astro-component",
+    "astro",
+    "svg",
+    "icon",
+    "cache"
   ],
   "scripts": {},
   "devDependencies": {
@@ -30,7 +30,7 @@
     "astro": "^4.0.8"
   },
   "peerDependencies": {
-    "astro": "^3.0.0"
+    "astro": "^4.0.8"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",

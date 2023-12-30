@@ -1,7 +1,6 @@
 ---
 import getIcon from './utils/save';
 import { DOMParser } from '@xmldom/xmldom';
-
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'svg'> {
@@ -11,6 +10,9 @@ interface Props extends HTMLAttributes<'svg'> {
 const { icon, ...attrs } = Astro.props;
 
 let innerHTML = await getIcon(icon);
+if (!innerHTML) {
+    throw new Error(`Icon ${icon} not found.`);
+}
 
 
 var parser = new DOMParser();
