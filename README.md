@@ -65,3 +65,6 @@ it also takes normal SVG attributes
 
 Contributions are welcome! Please refer to the contribution guidelines in the GitHub repository.
 
+
+## npm 
+[astro-cached-icon](https://www.npmjs.com/package/astro-cached-icon)
