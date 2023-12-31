@@ -1,28 +1,27 @@
 ---
-import getIcon from './utils/save';
+import load from './utils/save';
 import { DOMParser } from '@xmldom/xmldom';
 import type { HTMLAttributes } from 'astro/types';
+
 
 interface Props extends HTMLAttributes<'svg'> {
     icon: Icon | ShortHand
 }
 
+
+
+
 const { icon, ...attrs } = Astro.props;
 
-let innerHTML = await getIcon(icon);
-if (!innerHTML) {
-    throw new Error(`Icon ${icon} not found.`);
-}
-
-
+let innerHTML = await load(icon);
 var parser = new DOMParser();
 var svgDoc = parser.parseFromString(innerHTML, 'text/html');
-
 for (const [key, value] of Object.entries(attrs)) {
-    svgDoc.documentElement.setAttribute(key, String(value));
+    svgDoc.documentElement?.setAttribute(key, String(value));
 }
 
-innerHTML = svgDoc.documentElement.toString()
+innerHTML = svgDoc?.documentElement?.toString()
+
 
 ---
 

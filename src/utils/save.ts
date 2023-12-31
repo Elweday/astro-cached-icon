@@ -1,8 +1,20 @@
-import fs from 'node:fs';
+import fs from 'fs';
 import checksum from './checksum';
 
+const fallback = `
+    <svg>
+        <path>
+        </path>
+    </svg>
+`;
 
-const ROOT = "public/static/cached-icons/";
+
+const DIR = "assets/cached-icons/"
+const PARENT = "public/" + DIR
+
+
+type Icon = { pack: string, name: string }
+type ShortHand = string;
 
 function getIcon(icon: Icon | string): { pack: string; name: string } {
     if (isIcon(icon)) {
@@ -18,33 +30,35 @@ function isIcon(value: any): value is Icon {
     return typeof value === 'object' && value !== null && 'pack' in value && 'name' in value; // Check for required properties
 }
 
-async function fetchIcon(icon: Icon | ShortHand): Promise<string | void> {
+async function fetchIcon(icon: Icon | ShortHand): Promise<string> {
     const { pack, name } = getIcon(icon)
     const url = `https://api.iconify.design/${pack}/${name}.svg`;
-    const content = await fetch(url).then(res => res.text()).catch(function () {console.error("Could not find icon", pack,":", name)});
+    const content = await fetch(url).then(res => res.text());
     return content;
 }
 
-export default async function save(icon: Icon | ShortHand) {
-    const ic = getIcon(icon)
-    const path = ROOT + checksum(ic.pack + ":" + ic.name) + ".svg";
-    if (!fs.existsSync(ROOT)) {
-      fs.mkdirSync(ROOT, { recursive: true });
-    }
 
-    if (!fs.existsSync(path)) {
+export default async function load(icon: Icon | ShortHand) {
+    const ic = getIcon(icon)
+    const filename =  checksum(ic.pack + ":" + ic.name) + ".svg"
+    const PARENT = root + filename;
+
+    if (!fs.existsSync(path) && process.env.NODE_ENV !== "production") {
         console.log("fetching", ic.name, "from", ic.pack, "to", path)
         const content = await fetchIcon(ic);
-        if (!content) return;
         fs.writeFileSync(path, content);
         return content
     }
     else {
-        
-        console.log("using cached", ic.name, "from", ic.pack, "at", path)
-        const url = new URL(path, import.meta.url);
-        const data = fs.readFileSync(url, 'utf8');
-        return data;
+        try {
+            const data = await import(/* @vite-ignore */ +"/" + DIR + filename +"?raw" );
+            return data.default;
+        }
+        catch {
+            console.log("failed to load", ic.name, "from", ic.pack, "using fallback")
+            return fallback;
+        }
     }
+
 }
 
