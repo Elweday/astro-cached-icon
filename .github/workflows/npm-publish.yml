@@ -12,6 +12,9 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      IS_RELEASE_COMMIT: false
+
     steps:
       - name: 📦 Checkout code
         uses: actions/checkout@v4
@@ -19,27 +22,33 @@ jobs:
       - name: 🚀 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' 
+          node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
-
+      - name: 🛠️ Is Release?
+        run: |
+          if [[ "${{ github.event.head_commit.message }}" == "release:"* ]]; then
+            echo "IS_RELEASE_COMMIT=true" >> $GITHUB_ENV
+            echo "versioning....."
+          else
+            echo "Skipping version bump as commit message does not start with 'release'."
+          fi
       - name: 🛠️ Validate and setup
         run: |
           git config --global user.email "mohammednh2864@gmail.com"
           git config --global user.name "elweday"
           npm ci
-          if [[ "${{ github.event.head_commit.message }}" == "release:"* ]]; then
-            echo "versioning....."
-            npm version patch
-            git commit -am "Bump version"
-            git push origin master
+          npm version patch
+          git commit -am "Bump version"
+          git push origin master
           else
-            echo "Skipping version bump as commit message does not start with  'release'."
+            echo "Skipping version bump as commit message does not start with 'release'."
           fi
+        if: env.IS_RELEASE_COMMIT
           
       - name: 📦 Publish to GitHub Packages 
         run: npm publish
-        if: ${{ github.event.head_commit.message == "release:"*  }}
+        if: env.IS_RELEASE_COMMIT
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -47,6 +56,6 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
-        if: ${{ github.event.head_commit.message == "release:"*  }}
+        if: env.IS_RELEASE_COMMIT
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
