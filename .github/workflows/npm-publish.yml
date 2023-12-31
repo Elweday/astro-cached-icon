@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     env:
@@ -28,6 +28,8 @@ jobs:
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
           minor-wording:  'MINOR:,FEAT:,'
@@ -36,8 +38,7 @@ jobs:
           rc-wording:     'RELEASE:'
 
       - name: 🛠️ Validate and setup
-        run: |
-          npm ci
+        run: npm ci
           
       - name: 📦 Publish to GitHub Packages 
         run: npm publish
