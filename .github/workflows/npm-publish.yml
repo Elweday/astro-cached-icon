@@ -19,7 +19,7 @@ jobs:
       - name: 🚀 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'  # Use a stable Node.js version
+          node-version: '20' 
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
 
@@ -39,7 +39,7 @@ jobs:
           
       - name: 📦 Publish to GitHub Packages 
         run: npm publish
-        if: ${{ github.event.head_commit.message == 'publish-release' }}
+        if: ${{ github.event.head_commit.message == "release:"*  }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -47,6 +47,6 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
-        if: ${{ github.event.head_commit.message == 'publish-release' }}
+        if: ${{ github.event.head_commit.message == "release:"*  }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
