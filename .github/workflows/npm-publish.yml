@@ -1,4 +1,4 @@
-name: Publish package to GitHub Packages
+name: Publish package to GitHub Packages and NPM
 on:
   push:
     branches:
@@ -20,3 +20,9 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
