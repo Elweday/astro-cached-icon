@@ -16,6 +16,8 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
+      - run: git config --global user.email "mohammednh2864@gmail.com"
+      - run: git config --global user.name "elweday"
       - run: npm ci
       - run:  npm version patch
       - run: npm publish
