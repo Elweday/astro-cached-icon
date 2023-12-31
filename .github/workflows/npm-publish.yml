@@ -16,19 +16,30 @@ jobs:
       - name: 📦 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🚀🛠️ Setup Node.js and Validate package
+      - name: 🚀 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '14'  # Use a stable Node.js version
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@elweday'
+          scope: '@octocat'
 
-      - run: git config --global user.email "mohammednh2864@gmail.com"
-      - run: git config --global user.name "elweday"
-      - run: npm version patch
-      - run: npm ci
+      - name: 🛠️ Validate and setup
+        run: |
+          git config --global user.email "mohammednh2864@gmail.com"
+          git config --global user.name "elweday"
+          npm ci
+          if [[ "${{ github.event.head_commit.message }}" == "release:"* ]]; then
+            echo "versioning....."
+            npm version patch
+            git commit -am "Bump version"
+            git push origin master
+          else
+            echo "Skipping version bump as commit message does not start with  'release'."
+          fi
+          
       - name: 📦 Publish to GitHub Packages 
         run: npm publish
+        if: ${{ github.event.head_commit.message == 'publish-release' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -36,5 +47,6 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
+        if: ${{ github.event.head_commit.message == 'publish-release' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
