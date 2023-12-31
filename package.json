@@ -1,6 +1,6 @@
 {
   "name": "@elweday/astro-cached-icon",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "types": "./src/index.d.ts",
   "description": "Astro component for cached icons",
@@ -11,10 +11,9 @@
     "registry": "https://npm.pkg.github.com"
   },
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/elweday/astro-cached-icon.git"
-	},
-
+    "type": "git",
+    "url": "git+https://github.com/elweday/astro-cached-icon.git"
+  },
   "exports": {
     ".": "./index.ts"
   },
