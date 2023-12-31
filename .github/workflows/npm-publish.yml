@@ -19,7 +19,7 @@ jobs:
       - name: 🚀 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'  # Use a stable Node.js version
+          node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
 
