@@ -16,13 +16,18 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
-      - run: git config --global user.email "mohammednh2864@gmail.com"
-      - run: git config --global user.name "elweday"
-      - run: npm ci
-      - run:  npm version patch
-      - run: npm publish
+      - name: validate and setup
+        run: |
+          git config --global user.email "mohammednh2864@gmail.com"
+          git config --global user.name "elweday"
+          npm ci
+          npm version patch
+          
+      - name: Publish to Github Packages 
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
