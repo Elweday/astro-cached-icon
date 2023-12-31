@@ -24,7 +24,6 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@elweday'
       - name: '🤖 Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
@@ -39,7 +38,7 @@ jobs:
 
       - name: 🛠️ Validate and setup
         run: npm ci
-          
+
       - name: 📦 Publish to GitHub Packages 
         run: | 
           npm config set registry "https://npm.pkg.github.com"
