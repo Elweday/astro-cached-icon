@@ -41,13 +41,15 @@ jobs:
         run: npm ci
           
       - name: 📦 Publish to GitHub Packages 
-        run: npm publish
+        run: | 
+          npm config set registry "https://npm.pkg.github.com"
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📦 Publish to NPM
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          npm config set registry "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
           npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
