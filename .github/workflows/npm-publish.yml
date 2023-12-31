@@ -28,19 +28,12 @@ jobs:
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
           minor-wording:  'MINOR:,FEAT:,'
           major-wording:  'MAJOR:'
           patch-wording:  'PATCH:,FIX:'
           rc-wording:     'RELEASE:'
-          
-
-
-
-
 
       - name: 🛠️ Validate and setup
         run: |
