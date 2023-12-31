@@ -1,34 +1,41 @@
-name: Publish package to GitHub Packages and NPM
+name: 🚀 Publish package to GitHub Packages and NPM
+
 on:
   push:
     branches:
       - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '14'  # Use a stable Node.js version
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
-      - name: validate and setup
+
+      - name: 🛠️ Validate and setup
         run: |
           git config --global user.email "mohammednh2864@gmail.com"
           git config --global user.name "elweday"
           npm ci
           npm version patch
           
-      - name: Publish to Github Packages 
+      - name: 📦 Publish to GitHub Packages 
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Publish to NPM
+
+      - name: 📦 Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
