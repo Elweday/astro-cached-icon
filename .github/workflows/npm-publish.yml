@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,27 +25,29 @@ jobs:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@octocat'
-      - name: 🛠️ Is Release?
-        run: |
-          if [[ "${{ github.event.head_commit.message }}" == "release:"* ]]; then
-            echo "IS_RELEASE_COMMIT=true" >> $GITHUB_ENV
-            echo "versioning....."
-          else
-            echo "Skipping version bump as commit message does not start with 'release'."
-          fi
+      - name: 'Automated Version Bump'
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit-message: 'CI: bumps version to {{version}} [skip ci]'
+          minor-wording:  'MINOR:,FEAT:,'
+          major-wording:  'MAJOR:'
+          patch-wording:  'PATCH:,FIX:'
+          rc-wording:     'RELEASE:'
+          
+
+
+
+
+
       - name: 🛠️ Validate and setup
         run: |
-          git config --global user.email "mohammednh2864@gmail.com"
-          git config --global user.name "elweday"
           npm ci
-          npm version patch
-          git commit -am "Bump version"
-          git push origin master
-        if: env.IS_RELEASE_COMMIT
           
       - name: 📦 Publish to GitHub Packages 
         run: npm publish
-        if: env.IS_RELEASE_COMMIT
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,6 +55,5 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
-        if: env.IS_RELEASE_COMMIT
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
