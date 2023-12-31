@@ -1,5 +1,8 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import checksum from './checksum';
+
+
+const ROOT = "public/static/cached-icons/";
 
 function getIcon(icon: Icon | string): { pack: string; name: string } {
     if (isIcon(icon)) {
@@ -22,15 +25,11 @@ async function fetchIcon(icon: Icon | ShortHand): Promise<string | void> {
     return content;
 }
 
-
-
-
 export default async function save(icon: Icon | ShortHand) {
     const ic = getIcon(icon)
-    const root = "public/cached-icons/";
-    const path = root + checksum(ic.pack + ":" + ic.name) + ".svg";
-    if (!fs.existsSync(root)) {
-      fs.mkdirSync(root, { recursive: true });
+    const path = ROOT + checksum(ic.pack + ":" + ic.name) + ".svg";
+    if (!fs.existsSync(ROOT)) {
+      fs.mkdirSync(ROOT, { recursive: true });
     }
 
     if (!fs.existsSync(path)) {
@@ -43,7 +42,8 @@ export default async function save(icon: Icon | ShortHand) {
     else {
         
         console.log("using cached", ic.name, "from", ic.pack, "at", path)
-        const data = fs.readFileSync(path, 'utf8');
+        const url = new URL(path, import.meta.url);
+        const data = fs.readFileSync(url, 'utf8');
         return data;
     }
 }
