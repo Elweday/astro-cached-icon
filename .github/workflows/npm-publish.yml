@@ -42,14 +42,15 @@ jobs:
       - name: 📦 Publish to GitHub Packages 
         run: | 
           npm config set registry "https://npm.pkg.github.com"
-          npm publish
+          npm publish --access public
+
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📦 Publish to NPM
         run: |
           npm config set registry "https://registry.npmjs.org/"
-          npm publish
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
