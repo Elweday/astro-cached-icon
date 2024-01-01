@@ -49,8 +49,7 @@ jobs:
       - name: 📦 Publish to NPM
         run: |
           npm config set registry "https://registry.npmjs.org/"
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish
         env:
-          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
