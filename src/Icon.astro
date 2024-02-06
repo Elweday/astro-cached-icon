@@ -14,7 +14,7 @@ const { icon, name, pack, ...attrs } = Astro.props as Props;
 
 let innerHTML = await load(icon, name, pack);
 var parser = new DOMParser();
-var svgDoc = parser.parseFromString(innerHTML, 'text/html');s
+var svgDoc = parser.parseFromString(innerHTML, 'text/html');
 for (const [key, value] of Object.entries(attrs)) {
     svgDoc.documentElement?.setAttribute(key, String(value));
 }
