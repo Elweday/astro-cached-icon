@@ -30,7 +30,7 @@ export default async function load(icon?: ShortHand, name?: string, pack?: strin
         ic ={ pack, name };
      }
     else throw new Error('Invalid icon format');
-    const ROOT =  (process.env.NODE_ENV !== "production") ? "assets/cached-icons": "/public/assets/cached-icons";
+    const ROOT =  (process.env.NODE_ENV === "production") ? "assets/cached-icons": "/public/assets/cached-icons";
 
     const filename =  ic.name + ".svg"
     const dir = ROOT +  "/" + ic.pack
