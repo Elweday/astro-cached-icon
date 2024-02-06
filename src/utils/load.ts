@@ -5,7 +5,7 @@ const FALLBACK = `
 	<path fill="currentColor" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="m6 11l5-5l13 13L37 6l5 5l-13 13l13 13l-5 5l-13-13l-13 13l-5-5l13-13z" clip-rule="evenodd" />
 </svg>`;
 
-const DIR = "public/assets/cached-icons"
+const ROOT = "/public/assets/cached-icons"
 
 
 type Icon = { pack: string, name: string }
@@ -33,7 +33,7 @@ export default async function load(icon?: ShortHand, name?: string, pack?: strin
     else throw new Error('Invalid icon format');
 
     const filename =  ic.name + ".svg"
-    const dir = DIR +  "/" + ic.pack
+    const dir = ROOT +  "/" + ic.pack
     const path = dir + "/" + filename
 
     const exists = fs.existsSync(path);
