@@ -1,19 +1,18 @@
 ---
-import load from './utils/save';
+import load from './utils/load';
 import { DOMParser } from '@xmldom/xmldom';
 import type { HTMLAttributes } from 'astro/types';
 
+type ShortHand = `${string}:${string}`;
+ 
+type Props =  HTMLAttributes<'svg'>  & ( 
+    { icon: ShortHand, name?: undefined, pack?: undefined } | { name: string; pack: string, icon?: undefined }
+)
 
-interface Props extends HTMLAttributes<'svg'> {
-    icon: Icon | ShortHand
-}
 
+const { icon, name, pack, ...attrs } = Astro.props as Props;
 
-
-
-const { icon, ...attrs } = Astro.props;
-
-let innerHTML = await load(icon);
+let innerHTML = await load(icon, name, pack);
 var parser = new DOMParser();
 var svgDoc = parser.parseFromString(innerHTML, 'text/html');
 for (const [key, value] of Object.entries(attrs)) {
@@ -21,8 +20,6 @@ for (const [key, value] of Object.entries(attrs)) {
 }
 
 innerHTML = svgDoc?.documentElement?.toString()
-
-
 ---
 
 <Fragment set:html={innerHTML} /> 

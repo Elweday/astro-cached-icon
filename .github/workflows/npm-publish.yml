@@ -24,9 +24,10 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
+
       - name: '🤖 Automated Version Bump'
-        id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
+        id: version-bump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -50,6 +51,7 @@ jobs:
       - name: 📦 Publish to NPM
         run: |
           npm config set registry "https://registry.npmjs.org/"
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
