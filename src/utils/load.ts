@@ -28,7 +28,7 @@ export async function load(icon?: ShortHand, name?: string, pack?: string): Prom
         ic ={ pack, name };
      }
     else throw new Error('Invalid icon format');
-    const ROOT =  process.env.NODE_ENV !== "production" ? "/cached-icons" : "public/cached-icons" ;
+    const ROOT =  "public/cached-icons" ;
 
     const filename =  ic.name + ".svg"
     const dir = ROOT +  "/" + ic.pack
