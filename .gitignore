@@ -29,3 +29,7 @@ src/pages/
 
 # macOS-specific files
 .DS_Store
+
+# Public Folder
+public/
+
