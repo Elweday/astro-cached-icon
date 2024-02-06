@@ -28,7 +28,7 @@ npm install astro-cached-icon
 just import and use
 
 ```jsx
-import Icon  from 'astro-cached-icon';
+import Icon from 'astro-cached-icon';
 
 ```
 

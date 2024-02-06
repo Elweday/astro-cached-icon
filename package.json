@@ -7,11 +7,8 @@
   "license": "MIT",
   "author": "Mohammed Nasser <https://github.com/elweday>",
   "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/elweday/astro-cached-icon.git"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "exports": {
     ".": "./index.ts"
