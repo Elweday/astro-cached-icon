@@ -12,7 +12,7 @@ node_modules/
 astro.config.mjs
 
 # lock-file
-pnpm-lock.yaml
+# pnpm-lock.yaml
 
 # logs
 npm-debug.log*
