@@ -12,14 +12,16 @@ type Props =  HTMLAttributes<'svg'>  & (
 
 const { icon, name, pack, ...attrs } = Astro.props as Props;
 
-let innerHTML = await load(icon, name, pack);
-var parser = new DOMParser();
-var svgDoc = parser.parseFromString(innerHTML, 'text/html');
-for (const [key, value] of Object.entries(attrs)) {
-    svgDoc.documentElement?.setAttribute(key, String(value));
-}
+const rawHTML = await load(icon, name, pack);
+const parser = new DOMParser();
+const svgDoc = parser.parseFromString(rawHTML, 'text/html');
+const el = svgDoc.documentElement;
 
-innerHTML = svgDoc?.documentElement?.toString()
+Object.entries(attrs).forEach(([key, value]) => {
+    el.setAttribute(key, String(value));
+})
+
+const innerHTML = el?.toString()
 ---
 
 <Fragment set:html={innerHTML} /> 
