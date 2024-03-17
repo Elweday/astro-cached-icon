@@ -1,5 +1,3 @@
-import fs from 'node:fs';
-
 const fallbackIcon = ({iconName} : {iconName: string}) =>`
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 2048 2048">
     <title> Failed to load icon ${iconName}</title>
@@ -17,19 +15,19 @@ async function fetchIcon({ pack, name }: Icon): Promise<string> {
     const found = text !== "404"
     if (found) {
         console.log(`downloaded icon ${iconName}`)
+        return text
     }
     else {
         console.log(`failed to download icon ${iconName}, icon does not exist on the iconify repository.`)
-
+        return fallbackIcon({ iconName });
     }
-    return  found ? text : fallbackIcon({ iconName });
 }
 
-
 async function loadIconFromBundle(iconName: string, path: string): Promise<string|void> {
-    try {
-        const data = await import( /* @vite-ignore */ "/"+path +"?raw");
-        if (data.default)  return data.default;
+
+    try {        
+        const data = await import(/* @vite-ignore */`${path}?raw`);
+        return data.default
     }
     catch (error) {
         console.log(`failed to load icon ${iconName} from ${path}`)
@@ -37,10 +35,10 @@ async function loadIconFromBundle(iconName: string, path: string): Promise<strin
 }
 
 async function writeIcon(dir: string, path: string, content: string): Promise<void> {
-    await fs.mkdir(dir, { recursive: true }, () => {});
-    await fs.writeFile(path, content, () => {});
+    const fs = await import ('node:fs');
+    await fs.mkdir(`public/${dir}`, { recursive: true }, () => {});
+    await fs.writeFile(`public/${path}`, content, () => {});
 }
-
 
 const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: ShortHand, name: string, pack: string} => {
     let ic: Icon;
@@ -63,17 +61,22 @@ const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: Sho
 export async function load(icon?: ShortHand, name?: string, pack?: string): Promise<string> {
     const ic = getIconName(icon, name, pack);
     let innerHTML = fallbackIcon({ iconName: ic.icon });
-    const dir =  `public/cached-icons/${ic.pack}`;
+    const dir =  `/icons/${ic.pack}`;
     const path = `${dir}/${ic.name}.svg`;
-    if (process.env.NODE_ENV !== "production" && !fs.existsSync(path) ) {
-        const content = await fetchIcon(ic);
-        await writeIcon(dir, path, content);
-        innerHTML = content ? content : innerHTML;
-
+    if (process.env.NODE_ENV !== "production") {
+        const fs = await import ('node:fs');
+        if (!fs.existsSync("public/"+path)) {
+            const content = await fetchIcon(ic);
+            await writeIcon(dir, path, content);
+            innerHTML = content ? content : innerHTML;
+        }
+        else {
+            const loaded = await loadIconFromBundle(ic.icon, path);
+            innerHTML = loaded ? loaded : innerHTML;
+        }
     } else { 
         const loaded = await loadIconFromBundle(ic.icon, path);
         innerHTML = loaded ? loaded : innerHTML;
     }
     return innerHTML;
-
 }
