@@ -23,21 +23,18 @@ async function fetchIcon({ pack, name }: Icon): Promise<string> {
     }
 }
 
-async function loadIconFromBundle(iconName: string, path: string): Promise<string|void> {
+async function loadIconFromBundle(ic: Icon): Promise<string|void> {
+    const BASE = import.meta.env.BASE_URL;
+    const trimmed = BASE.replace(/\/$/, '');
+    const path = `${trimmed}/icons/${ic.pack}/${ic.name}.svg`;
 
     try {        
         const data = await import(/* @vite-ignore */`${path}?raw`);
         return data.default
     }
     catch (error) {
-        console.log(`failed to load icon ${iconName} from ${path}`)
+        console.log(`failed to load icon ${ic.pack}:${ic.name} from ${path}`)
     }
-}
-
-async function writeIcon(dir: string, path: string, content: string): Promise<void> {
-    const fs = await import ('node:fs');
-    await fs.mkdir(`public/${dir}`, { recursive: true }, () => {});
-    await fs.writeFile(`public/${path}`, content, () => {});
 }
 
 const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: ShortHand, name: string, pack: string} => {
@@ -61,21 +58,25 @@ const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: Sho
 export async function load(icon?: ShortHand, name?: string, pack?: string): Promise<string> {
     const ic = getIconName(icon, name, pack);
     let innerHTML = fallbackIcon({ iconName: ic.icon });
-    const dir =  `/icons/${ic.pack}`;
+    const dir =  `public/icons/${ic.pack}`;
     const path = `${dir}/${ic.name}.svg`;
     if (process.env.NODE_ENV !== "production") {
+        // in dev mode, download icon if it doesn't exist
         const fs = await import ('node:fs');
-        if (!fs.existsSync("public/"+path)) {
+        if (!fs.existsSync(path)) {
             const content = await fetchIcon(ic);
-            await writeIcon(dir, path, content);
+            await fs.mkdir(dir, { recursive: true }, () => {});
+            await fs.writeFile(path, content, () => {});
             innerHTML = content ? content : innerHTML;
         }
         else {
-            const loaded = await loadIconFromBundle(ic.icon, path);
+            // in dev mode, load icon from bundle
+            const loaded = await loadIconFromBundle(ic);
             innerHTML = loaded ? loaded : innerHTML;
         }
     } else { 
-        const loaded = await loadIconFromBundle(ic.icon, path);
+        // in production mode, load icon from bundle
+        const loaded = await loadIconFromBundle(ic);
         innerHTML = loaded ? loaded : innerHTML;
     }
     return innerHTML;
