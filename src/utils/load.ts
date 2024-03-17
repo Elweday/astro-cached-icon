@@ -26,7 +26,7 @@ async function fetchIcon({ pack, name }: Icon): Promise<string> {
 async function loadIconFromBundle(ic: Icon): Promise<string|void> {
     const BASE = import.meta.env.BASE_URL;
     const trimmed = BASE.replace(/\/$/, '');
-    const path = `${trimmed}/icons/${ic.pack}/${ic.name}.svg`;
+    const path = `${trimmed}icons/${ic.pack}/${ic.name}.svg`;
 
     try {        
         const data = await import(/* @vite-ignore */`${path}?raw`);
