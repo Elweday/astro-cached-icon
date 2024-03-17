@@ -1,5 +1,5 @@
 # astro-cached-icon
-
+> This package is still in beta, don't use in production
 **Effortlessly integrate Iconify icons into your Astro projects with caching and bundling for optimal performance.**
 
 ## Features
@@ -20,7 +20,7 @@ this package is heavily inspired by
 and is basically created to fix their shortcomings
 
 
-## Installation
+## Installation 
 
 ```bash
 npm install astro-cached-icon
@@ -40,6 +40,7 @@ import Icon from 'astro-cached-icon';
 ```
 
 or the shorthand 
+> this is preferred
 ```jsx
 <Icon icon="mdi:home" />
 ```
@@ -49,12 +50,9 @@ it also takes normal SVG attributes
 <Icon name="home" pack="mdi" width="24" height="24" class="icon-custom" style="color: red;" />
 ```
 
-
-
-
-## Caching and bundling
-
-- Icons are automatically cached and bundled during Astro's build process for optimal performance.
+## recommendations 
+use [Iconify Intellisence VSCode extention](https://open-vsx.org/extension/antfu/iconify) if working with vscode to get preview and completion.
+![VSCode](/images/vscode.jpg) 
 
 ## Additional notes
 
@@ -62,11 +60,8 @@ it also takes normal SVG attributes
 - For more advanced usage and configuration options, check out the package's GitHub repository.
 
 ## Contributing
-
 Contributions are welcome! Please refer to the contribution guidelines in the GitHub repository.
-
 
 ## npm 
 [astro-cached-icon](https://www.npmjs.com/package/astro-cached-icon)
 
-## testing
