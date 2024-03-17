@@ -1,0 +1,43 @@
+---
+import Icon from '../Icon.astro';
+---
+
+
+<h1>Icons Test</h1>
+
+<div>
+    <Icon icon="mdi:github" />
+    <Icon icon="mdi:linkedin" />
+    <Icon icon="mdi:google" />
+    <Icon icon="mdi:facebook" />
+    <Icon icon="mdi:youtube" />
+    <Icon icon="mdi:discord" />
+    <Icon icon="mdi:youtube" />
+    <Icon icon="mdi:instagram"/>
+    <Icon icon="fa6-brands:x-twitter"  />
+    <Icon icon="fa6-brands:evernote" />
+    <Icon icon="fa6-brands:pinterest" />
+    <Icon icon="fa6-brands:skype" />
+    <Icon icon="fa6-brands:telegram" />
+    <Icon icon="fa6-brands:whatsapp" />
+    <Icon icon="fa6-brands:tiktok" />
+</div>
+
+
+<style>
+    div {
+        place-content: center;
+        align-items: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+        grid-template-rows: repeat(auto-fit, minmax(5rem, 1fr));
+        gap: 2rem;
+        flex-direction: column;
+        svg {
+            width: 5rem;
+            height: 5rem;
+            color: #489999;
+        }
+
+    }
+</style>

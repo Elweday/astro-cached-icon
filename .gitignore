@@ -20,7 +20,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-src/pages/
 
 
 # environment variables
@@ -31,5 +30,4 @@ src/pages/
 .DS_Store
 
 # Public Folder
-public/
 
