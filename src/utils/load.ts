@@ -34,6 +34,7 @@ async function loadIconFromBundle(ic: Icon): Promise<string|void> {
         return data.default
     }
     catch (error) {
+        console.log(error)
         console.log(`failed to load icon ${ic.pack}:${ic.name} from ${path}`)
     }
 }
