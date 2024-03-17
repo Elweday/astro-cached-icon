@@ -29,6 +29,7 @@ async function loadIconFromBundle(ic: Icon): Promise<string|void> {
     const path = `${trimmed}/icons/${ic.pack}/${ic.name}.svg`;
     try {        
         const data = await import(/* @vite-ignore */`${path}?raw`);
+        console.log(`loading icon ${ic.pack}:${ic.name} from ${path}`)
         console.log(data)
         return data.default
     }
