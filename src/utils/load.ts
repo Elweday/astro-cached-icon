@@ -1,3 +1,5 @@
+import { object } from 'astro/zod';
+
 const fallbackIcon = ({iconName} : {iconName: string}) =>`
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 2048 2048">
     <title> Failed to load icon ${iconName}</title>
@@ -24,19 +26,8 @@ async function fetchIcon({ pack, name }: Icon): Promise<string> {
 }
 
 async function loadIconFromBundle(ic: Icon): Promise<string|void> {
-    const BASE = import.meta.env.BASE_URL;
-    const trimmed = BASE.replace(/\/$/, '');
-    const path = `${trimmed}/icons/${ic.pack}_${ic.name}.svg`;
-    try {        
-        console.log(`loading icon ${ic.pack}:${ic.name} from ${path}`)
-        const data = await import(/* @vite-ignore */`${path}?raw`);
-        console.log(data)
-        return data.default
-    }
-    catch (error) {
-        console.log(error)
-        console.log(`failed to load icon ${ic.pack}:${ic.name} from ${path}`)
-    }
+    const BASE = await import(`/icons/${ic.pack}_${ic.name}.svg?raw`);
+    return BASE.default
 }
 
 const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: ShortHand, name: string, pack: string} => {
@@ -64,7 +55,7 @@ export async function load(icon?: ShortHand, name?: string, pack?: string): Prom
     const path = `${dir}/${ic.pack}_${ic.name}.svg`;
     if (process.env.NODE_ENV !== "production") {
         // in dev mode, download icon if it doesn't exist
-        const fs = await import ('node:fs');
+        const fs = await import('node:fs');
         if (!fs.existsSync(path)) {
             const content = await fetchIcon(ic);
             await fs.mkdir(dir, { recursive: true }, () => {});
