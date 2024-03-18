@@ -26,7 +26,7 @@ async function fetchIcon({ pack, name }: Icon): Promise<string> {
 async function loadIconFromBundle(ic: Icon): Promise<string|void> {
     const BASE = import.meta.env.BASE_URL;
     const trimmed = BASE.replace(/\/$/, '');
-    const path = `${trimmed}/icons/${ic.pack}/${ic.name}.svg`;
+    const path = `${trimmed}/icons/${ic.pack}_${ic.name}.svg`;
     try {        
         console.log(`loading icon ${ic.pack}:${ic.name} from ${path}`)
         const data = await import(/* @vite-ignore */`${path}?raw`);
@@ -60,8 +60,8 @@ const getIconName = (icon?: ShortHand, name?: string, pack?: string): {icon: Sho
 export async function load(icon?: ShortHand, name?: string, pack?: string): Promise<string> {
     const ic = getIconName(icon, name, pack);
     let innerHTML = fallbackIcon({ iconName: ic.icon });
-    const dir =  `public/icons/${ic.pack}`;
-    const path = `${dir}/${ic.name}.svg`;
+    const dir =  `public/icons`;
+    const path = `${dir}/${ic.pack}_${ic.name}.svg`;
     if (process.env.NODE_ENV !== "production") {
         // in dev mode, download icon if it doesn't exist
         const fs = await import ('node:fs');
